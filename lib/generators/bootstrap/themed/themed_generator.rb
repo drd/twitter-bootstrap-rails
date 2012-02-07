@@ -3,7 +3,7 @@ require 'rails/generators/generated_attribute'
 
 module Bootstrap
   module Generators
-    class ThemedGenerator < Rails::Generators::Base
+    class ThemedGenerator < ::Rails::Generators::Base
       source_root File.expand_path('../templates', __FILE__)
       argument :controller_path,    :type => :string
       argument :model_name,         :type => :string, :required => false
@@ -15,12 +15,8 @@ module Bootstrap
         initialize_views_variables
       end
 
-  	  def copy_views
+      def copy_views
         generate_views
-        gsub_file(File.join('app/views/layouts', "#{layout}.html.erb"), /\<ul\s+class=\"nav\">.*\<\/ul\>/mi) do |match|
-          match.gsub!(/\<\/ul\>/, "")
-            %|#{match} <li class="<%= controller.controller_path == '#{@controller_file_path}' ? 'active' : '' %>"><a href="<%= #{controller_routing_path}_path %>">#{plural_model_name}</a></li></ul>|
-          end
       end
 
       protected
@@ -59,9 +55,9 @@ module Bootstrap
       def columns
         begin
           excluded_column_names = %w[id created_at updated_at]
-          Kernel.const_get(@model_name).columns.reject{|c| excluded_column_names.include?(c.name) }.collect{|c| Rails::Generators::GeneratedAttribute.new(c.name, c.type)}
+          Kernel.const_get(@model_name).columns.reject{|c| excluded_column_names.include?(c.name) }.collect{|c| ::Rails::Generators::GeneratedAttribute.new(c.name, c.type)}
         rescue NoMethodError
-          Kernel.const_get(@model_name).fields.collect{|c| c[1]}.reject{|c| excluded_column_names.include?(c.name) }.collect{|c| Rails::Generators::GeneratedAttribute.new(c.name, c.type.to_s)}
+          Kernel.const_get(@model_name).fields.collect{|c| c[1]}.reject{|c| excluded_column_names.include?(c.name) }.collect{|c| ::Rails::Generators::GeneratedAttribute.new(c.name, c.type.to_s)}
         end
       end
 
@@ -76,11 +72,11 @@ module Bootstrap
 
       def generate_views
         views = {
-          'index.html.erb'   => File.join('app/views', @controller_file_path, "index.html.erb"),
-          'new.html.erb'     => File.join('app/views', @controller_file_path, "new.html.erb"),
-          'edit.html.erb'    => File.join('app/views', @controller_file_path, "edit.html.erb"),
-          '_form.html.erb'   => File.join('app/views', @controller_file_path, "_form.html.erb"),
-          'show.html.erb'    => File.join('app/views', @controller_file_path, "show.html.erb")}
+          "index.html.#{ext}"   => File.join('app/views', @controller_file_path, "index.html.#{ext}"),
+          "new.html.#{ext}"     => File.join('app/views', @controller_file_path, "new.html.#{ext}"),
+          "edit.html.#{ext}"    => File.join('app/views', @controller_file_path, "edit.html.#{ext}"),
+          "_form.html.#{ext}"   => File.join('app/views', @controller_file_path, "_form.html.#{ext}"),
+          "show.html.#{ext}"    => File.join('app/views', @controller_file_path, "show.html.#{ext}")}
         selected_views = views
         options.engine == generate_erb(selected_views)
       end
@@ -89,6 +85,10 @@ module Bootstrap
         views.each do |template_name, output_path|
           template template_name, output_path
         end
+      end
+
+      def ext
+        ::Rails.application.config.generators.options[:rails][:template_engine] || :erb
       end
 
     end

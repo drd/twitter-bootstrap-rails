@@ -1,9 +1,10 @@
 # Twitter Bootstrap for Rails 3.1 Asset Pipeline
 Bootstrap is a toolkit from Twitter designed to kickstart development of webapps and sites. It includes base CSS and HTML for typography, forms, buttons, tables, grids, navigation, and more.
 
+twitter-bootstrap-rails project integrates Bootstrap CSS toolkit for Rails 3.1 Asset Pipeline (Rails 3.2 supported)
 
-twitter-bootstrap-rails project integrates Bootstrap CSS toolkit for Rails 3.1 Asset Pipeline
-
+[![Build Status](https://secure.travis-ci.org/seyhunak/twitter-bootstrap-rails.png)](http://travis-ci.org/seyhunak/twitter-bootstrap-rails)
+[![Dependency Status](https://gemnasium.com/seyhunak/twitter-bootstrap-rails.png)](https://gemnasium.com/seyhunak/twitter-bootstrap-rails)
 
 ## Installing Gem
 
@@ -34,13 +35,13 @@ Usage:
     rails g bootstrap:install
 
 
-Layout (generates Twitter Bootstrap compatible layout.)
+Layout (generates Twitter Bootstrap compatible layout) - (Haml and Slim supported)
 
 
 Usage:
 
 
-    rails g bootstrap:layout [LAYOUT_NAME] [*ﬁxed or ﬂuid] [options]
+    rails g bootstrap:layout [LAYOUT_NAME] [*ﬁxed or ﬂuid]
 
 
 Example:
@@ -49,19 +50,20 @@ Example:
     rails g bootstrap:layout application fixed
 
 
-Themed (generates Twitter Bootstrap compatible scaffold views.)
+Themed (generates Twitter Bootstrap compatible scaffold views.) - (Haml and Slim supported)
 
 
 Usage:
 
 
-    rails g bootstrap:themed [RESOURCE_NAME] [LAYOUT] [options]
+    rails g bootstrap:themed [RESOURCE_NAME]
 
 
 Example:
 
 
     rails g scaffold post title:string description:text
+    rake db:migrate
     rails g bootstrap:themed posts
 
 
@@ -82,12 +84,14 @@ You have to require Bootstrap LESS (bootstrap.less) in your application.css
 
 
 Now, you can override LESS files provided by Twitter Bootstrap
+Also, you can import additional files (.ie responsive)
 
-     @import "twitter/bootstrap";
+    @import "twitter/bootstrap";
 
-     // Baseline grid
-     @basefont:          13px;
-     @baseline:          18px;
+    // import responsive layout
+    @import "twitter/bootstrap/responsive";
+
+    // Your custom stylesheets goes here (override Less here)
 
 
 ## Using Javascripts
@@ -106,29 +110,11 @@ You have to require Bootstrap JS (bootstrap.js) in your application.js
 Using Twitter Bootstrap with the CoffeeScript is easy.
 twitter-bootstrap-rails generates a "bootstrap.js.coffee" file for you
 to /app/assets/javascripts/ folder.
-
-    $ ->
-      $(".alert-message").alert()
-    $ ->
-      $(".tabs").button()
-    $ ->
-      $(".carousel").carousel()
-    $ ->
-      $(".collapse").collapse()
-    $ ->
-      $(".dropdown-toggle").dropdown()
-    $ ->
-      $("#myModal").modal options
-    $ ->
-      $("#example").popover options
-    $ ->
-      $("#navbar").scrollspy()
-    $ ->
-      $("#myTab").tab "show"
-    $ ->
-      $("#example").tooltip options
-    $ ->
-      $(".typeahead").typeahead()
+    
+    jQuery ->
+      $("a[rel=popover]").popover()
+      $(".tooltip").tooltip()
+      $("a[rel=tooltip]").tooltip()
 
 
 ## Using Static CSS, JS (w/o Less)
@@ -159,6 +145,10 @@ twitter-bootstrap-rails has seperate branch (w/o Less) that just serves latest s
   <li>Added new generators (install, layout and themed)</li>
   <li>Compability to Rails 3.2</li>
   <li>Transitioning to 2.0</li>
+  <li>Released gem v.2.0rc0</li>
+  <li>Added Haml and Slim support</li>
+  <li>Added Responsive layout support</li>
+  <li>Fixes and release 2.0.0</li>
 </ul>
 
 
@@ -173,6 +163,8 @@ twitter-bootstrap-rails has seperate branch (w/o Less) that just serves latest s
   <li>Colin Warren</li>
   <li>Giovanni Cappellotto</li>
   <li>Masakuni Kato</li>
+  <li>Gudleik Rasch</li>
+  <li>Thomas Volkmar Worm</li>
 </ul>
 
 
@@ -187,6 +179,7 @@ twitter-bootstrap-rails has seperate branch (w/o Less) that just serves latest s
 Seyhun Akyürek - seyhunak [at] gmail com
 
 [Follow me on Twitter](http://twitter.com/seyhunak "Twitter")
+
 [Follow me on Google+](http://plus.ly/seyhunak "Google+")
 
 
